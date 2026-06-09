@@ -1,4 +1,4 @@
-# GAMANIA-SRE-Pretest
+# SRE-DEMO-SRE-Pretest
 # SRE-Pretest, candidate Lam Kin Kwan
 
 # SRE Pretest — Deploy to EKS via HELM
@@ -9,7 +9,7 @@
 Internet
     └── AWS NLB (Network Load Balancer)   ← provisioned automatically by K8s Service
             └── EKS Worker Nodes (Private Subnet, 3 AZs)
-                    └── gamania-app Pods (nginx, port 8080)
+                    └── sre-demo-app Pods (nginx, port 8080)
                             └── /sre.txt → "Hello SRE!"
 ```
 
@@ -18,7 +18,7 @@ Internet
 ## File Structure
 
 ```
-charts/gamania-app/
+charts/sre-demo-app/
 ├── Chart.yaml              # Helm chart metadata (name, version, appVersion)
 ├── values.yaml             # All configurable parameters (image, replicas, HPA, resources)
 └── templates/
@@ -59,15 +59,15 @@ aws eks update-kubeconfig \
 # Login to ECR
 aws ecr get-login-password --region ap-southeast-1 | \
   docker login --username AWS --password-stdin \
-  694322569347.dkr.ecr.ap-southeast-1.amazonaws.com
+  <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com
 
 # Tag the image built in Topic 2
 docker tag sre-nginx:latest \
-  694322569347.dkr.ecr.ap-southeast-1.amazonaws.com/gamania-nginx:latest
+  <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/sre-demo-nginx:latest
 
 # Push to ECR
 docker push \
-  694322569347.dkr.ecr.ap-southeast-1.amazonaws.com/gamania-nginx:latest
+  <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/sre-demo-nginx:latest
 ```
 
 ---
@@ -76,16 +76,16 @@ docker push \
 
 ```bash
 # Lint the chart first (catch template errors before deploying)
-helm lint charts/gamania-app
+helm lint charts/sre-demo-app
 
 # Dry-run to preview rendered manifests
-helm install gamania-app charts/gamania-app --dry-run --debug
+helm install sre-demo-app charts/sre-demo-app --dry-run --debug
 
 # Install
-helm install gamania-app charts/gamania-app
+helm install sre-demo-app charts/sre-demo-app
 
 # If already installed, upgrade instead
-helm upgrade gamania-app charts/gamania-app
+helm upgrade sre-demo-app charts/sre-demo-app
 
 # Verify release status
 helm list
@@ -95,7 +95,7 @@ To override values without editing `values.yaml`:
 
 ```bash
 # Example: deploy with a specific image tag and 3 replicas
-helm upgrade gamania-app charts/gamania-app \
+helm upgrade sre-demo-app charts/sre-demo-app \
   --set image.tag=v1 \
   --set replicaCount=3
 ```
@@ -121,19 +121,19 @@ kubectl get pods
 
 # Expected output:
 # NAME                           READY   STATUS    RESTARTS   AGE
-# gamania-app-xxxx-xxxx          1/1     Running   0          2m
-# gamania-app-xxxx-yyyy          1/1     Running   0          2m
+# sre-demo-app-xxxx-xxxx          1/1     Running   0          2m
+# sre-demo-app-xxxx-yyyy          1/1     Running   0          2m
 
 # Check service and get NLB external endpoint
-kubectl get svc gamania-app
+kubectl get svc sre-demo-app
 
 # Expected output (EXTERNAL-IP will be an AWS NLB DNS name):
 # NAME          TYPE           CLUSTER-IP     EXTERNAL-IP                     PORT(S)        AGE
-# gamania-app   LoadBalancer   10.100.x.x     xxxx.elb.ap-southeast-1...      80:3xxxx/TCP   3m
+# sre-demo-app   LoadBalancer   10.100.x.x     xxxx.elb.ap-southeast-1...      80:3xxxx/TCP   3m
 
 # Wait for NLB to be provisioned (usually 1-3 minutes)
 # Then test the endpoint
-NLB_DNS=$(kubectl get svc gamania-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+NLB_DNS=$(kubectl get svc sre-demo-app -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 curl http://$NLB_DNS/sre.txt
 
 # Expected output:
@@ -149,7 +149,7 @@ kubectl get hpa
 
 # Expected output:
 # NAME          REFERENCE                TARGETS   MINPODS   MAXPODS   REPLICAS
-# gamania-app   Deployment/gamania-app   2%/80%    2         5         2
+# sre-demo-app   Deployment/sre-demo-app   2%/80%    2         5         2
 ```
 
 > HPA requires the Kubernetes Metrics Server to be running. On EKS, install it with:
@@ -184,7 +184,7 @@ The Helm `service.yaml` uses the `aws-load-balancer-type: nlb` annotation to req
 
 ```bash
 # Uninstall Helm release (removes deployment + service + NLB)
-helm uninstall gamania-app
+helm uninstall sre-demo-app
 
 # Or if deployed via manifest
 kubectl delete -f kubernetes/

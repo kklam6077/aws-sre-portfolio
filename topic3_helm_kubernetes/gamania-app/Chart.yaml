@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gamania-app
-description: Gamania SRE Pretest Web Service
+name: sre-demo-app
+description: Sre-Demo SRE Pretest Web Service
 type: application
 version: 0.1.0
 appVersion: "1.0.0"

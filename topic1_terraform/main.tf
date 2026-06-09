@@ -14,7 +14,7 @@ locals {
 # ================================================================================
 
 resource "aws_s3_bucket" "terraform_state" {
-  bucket        = "gamania-sre-tfstate-694322569347"
+  bucket        = "sre-demo-sre-tfstate-<YOUR_AWS_ACCOUNT_ID>"
   
   lifecycle {
     prevent_destroy = true

@@ -65,9 +65,9 @@ After `terraform apply` completes, the pipeline reads the output value and passe
 - name: Deploy to EKS via Helm
   run: |
     helm upgrade --install ${{ env.HELM_RELEASE_NAME }} \
-      ./topic3_helm_kubernetes/gamania-app \
-      -f topic3_helm_kubernetes/gamania-app/values.yaml \
-      -f topic3_helm_kubernetes/gamania-app/${{ env.HELM_VALUES }} \
+      ./topic3_helm_kubernetes/sre-demo-app \
+      -f topic3_helm_kubernetes/sre-demo-app/values.yaml \
+      -f topic3_helm_kubernetes/sre-demo-app/${{ env.HELM_VALUES }} \
       --set image.repository=$ECR_REGISTRY/$ECR_REPOSITORY \
       --set image.tag=$IMAGE_TAG \
       --set annotations.wafAclArn=${{ env.WAF_ACL_ARN }}
@@ -78,17 +78,17 @@ After `terraform apply` completes, the pipeline reads the output value and passe
 The value is kept empty in `values.yaml` and injected at deploy time via `--set` :
 
 ```yaml
-# topic3_helm_kubernetes/gamania-app/values.yaml
+# topic3_helm_kubernetes/sre-demo-app/values.yaml
 annotations:
   wafAclArn: ""   # injected by CI/CD pipeline at deploy time
 ```
 
 ```yaml
-# topic3_helm_kubernetes/gamania-app/templates/service.yaml
+# topic3_helm_kubernetes/sre-demo-app/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "gamania-app.fullname" . }}
+  name: {{ include "sre-demo-app.fullname" . }}
   annotations:
     {{- if .Values.annotations.wafAclArn }}
     # WAF ACL ARN injected from Terraform output via CI/CD pipeline

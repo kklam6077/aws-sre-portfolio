@@ -27,10 +27,10 @@ feature/*
 
 ## 相同 Codebase，不同 Values
 
-Helm chart（`topic3_helm_kubernetes/gamania-app`）在所有環境共用同一份，環境之間的差異只在於部署時使用的 values 檔案。
+Helm chart（`topic3_helm_kubernetes/sre-demo-app`）在所有環境共用同一份，環境之間的差異只在於部署時使用的 values 檔案。
 
 ```
-topic3_helm_kubernetes/gamania-app/
+topic3_helm_kubernetes/sre-demo-app/
 ├── values.yaml               # 所有環境共用的基礎預設值
 ├── values.alpha.yaml         # Alpha 環境的覆蓋設定
 ├── values.staging.yaml       # Staging 環境的覆蓋設定
@@ -77,9 +77,9 @@ autoscaling:
 Helm 透過 `-f` 將基礎 values 和環境專屬 values 合併：
 
 ```bash
-helm upgrade --install gamania-web-production ./topic3_helm_kubernetes/gamania-app \
-  -f topic3_helm_kubernetes/gamania-app/values.yaml \
-  -f topic3_helm_kubernetes/gamania-app/values.production.yaml \
+helm upgrade --install sre-demo-web-production ./topic3_helm_kubernetes/sre-demo-app \
+  -f topic3_helm_kubernetes/sre-demo-app/values.yaml \
+  -f topic3_helm_kubernetes/sre-demo-app/values.production.yaml \
   --set image.tag=$IMAGE_TAG
 ```
 
@@ -96,22 +96,22 @@ Pipeline 透過讀取 `github.base_ref`（PR 的目標 branch）來判斷要部�
   run: |
     if [[ "${{ github.base_ref }}" == "main" ]]; then
       echo "ENV=production" >> $GITHUB_ENV
-      echo "EKS_CLUSTER_NAME=gamania-sre-cluster-prod" >> $GITHUB_ENV
+      echo "EKS_CLUSTER_NAME=sre-demo-cluster-prod" >> $GITHUB_ENV
       echo "HELM_VALUES=values.production.yaml" >> $GITHUB_ENV
     elif [[ "${{ github.base_ref }}" == "staging" ]]; then
       echo "ENV=staging" >> $GITHUB_ENV
-      echo "EKS_CLUSTER_NAME=gamania-sre-cluster-staging" >> $GITHUB_ENV
+      echo "EKS_CLUSTER_NAME=sre-demo-cluster-staging" >> $GITHUB_ENV
       echo "HELM_VALUES=values.staging.yaml" >> $GITHUB_ENV
     else
       echo "ENV=alpha" >> $GITHUB_ENV
-      echo "EKS_CLUSTER_NAME=gamania-sre-cluster-alpha" >> $GITHUB_ENV
+      echo "EKS_CLUSTER_NAME=sre-demo-cluster-alpha" >> $GITHUB_ENV
       echo "HELM_VALUES=values.alpha.yaml" >> $GITHUB_ENV
     fi
 ```
 
 每個環境還有各自獨立的：
 - **EKS cluster**：環境之間完全隔離
-- **Helm release name**：`gamania-web-alpha`、`gamania-web-production`
+- **Helm release name**：`sre-demo-web-alpha`、`sre-demo-web-production`
 
 ---
 
@@ -128,7 +128,7 @@ deploy-production:
   steps:
     - name: Deploy to production
       run: |
-        helm upgrade --install gamania-web-production ...
+        helm upgrade --install sre-demo-web-production ...
 ```
 
 當 pipeline 執行到這個 job 時，GitHub 會暫停並通知指定的 reviewer。只有 reviewer 在 GitHub UI 點擊核准後，部署才會繼續執行。這確保了 production 的任何變更都有人工把關。
@@ -139,7 +139,7 @@ deploy-production:
 
 | 環境 | 觸發條件 | EKS Cluster | 審核方式 |
 |---|---|---|---|
-| Alpha | PR merge → develop | gamania-sre-cluster-alpha | 自動部署 |
-| Staging | PR merge → staging | gamania-sre-cluster-staging | 自動部署 |
-| Production | PR merge → main | gamania-sre-cluster-prod | 需要人工審核 |
+| Alpha | PR merge → develop | sre-demo-cluster-alpha | 自動部署 |
+| Staging | PR merge → staging | sre-demo-cluster-staging | 自動部署 |
+| Production | PR merge → main | sre-demo-cluster-prod | 需要人工審核 |
 

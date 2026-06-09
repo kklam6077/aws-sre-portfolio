@@ -11,7 +11,7 @@ module "vpc" {
 
 
 
-  name = "gamania-sre-vpc"
+  name = "sre-demo-sre-vpc"
 
   cidr = local.vpc_cidr 
 

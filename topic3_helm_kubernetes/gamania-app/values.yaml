@@ -3,7 +3,7 @@
 # pod 啟動時都重新 pull Image, 確定拿到latest Image
 # =================================================
 image:
-  repository: 694322569347.dkr.ecr.ap-southeast-1.amazonaws.com/gamania-nginx 
+  repository: <YOUR_AWS_ACCOUNT_ID>.dkr.ecr.ap-southeast-1.amazonaws.com/sre-demo-nginx 
   tag: latest
   pullPolicy: Always
 

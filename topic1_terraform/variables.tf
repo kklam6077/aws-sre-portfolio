@@ -6,7 +6,7 @@ variable "aws_region" {
 
 variable "cluster_name" {
   type        = string
-  default     = "gamania-sre-cluster"
+  default     = "sre-demo-cluster"
   description = "EKS 叢集的專屬名稱"
 }
 

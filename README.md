@@ -1,6 +1,6 @@
-# Gamania SRE Pretest — KK Lam
+# Sre-Demo SRE Pretest — KK Lam
 
-This repository contains my submission for the Gamania SRE Pretest, covering infrastructure provisioning, containerization, Kubernetes deployment, and CI/CD pipeline design.
+This repository contains my submission for the Sre-Demo SRE Pretest, covering infrastructure provisioning, containerization, Kubernetes deployment, and CI/CD pipeline design.
 
 ---
 
@@ -26,7 +26,7 @@ sre-pretest/
 g---|---|---|
 | 1 | `topic1_terraform/` | `README.md` |
 | 2 | `topic2_docker/` | `Instruction.md` |
-| 3 | `topic3_helm_kubernetes/gamania-app/` | `INSTRUCTIONS.md` |
+| 3 | `topic3_helm_kubernetes/sre-demo-app/` | `INSTRUCTIONS.md` |
 | 4 | `topic4_cicd` | `deploy.yaml` |
 | 5 | `topic5_GitOps_MultiEnvironment/` | `ANSWER.md` |
 | 6 | `topic6_TerraformLink/` | `ANSWER.md` |

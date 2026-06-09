@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gamania-app.fullname" . }}
+  name: {{ include "sre-demo-app.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: gamania-app
+      app: sre-demo-app
   template:
     metadata:
       labels:
-        app: gamania-app
+        app: sre-demo-app
     spec:
       containers:
         - name: web-service

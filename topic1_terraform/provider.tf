@@ -7,7 +7,7 @@ terraform {
 
    # 初始化指令範例：
    # terraform init \
-   #   -backend-config="bucket=gamania-sre-tfstate-694322569347" \
+   #   -backend-config="bucket=sre-demo-sre-tfstate-<YOUR_AWS_ACCOUNT_ID>" \
    #   -backend-config="key=sre-pretest/terraform.tfstate" \
    #   -backend-config="region=ap-northeast-1"
 

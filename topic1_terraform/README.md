@@ -1,4 +1,4 @@
-# GAMANIA-SRE-Pretest
+# SRE-DEMO-SRE-Pretest
 # SRE-Pretest, candidate Lam Kin Kwan
 
 # SRE Pretest — AWS Infrastructure (Terraform)
@@ -57,7 +57,7 @@ This project uses **Partial Configuration** for the S3 backend. The `backend "s3
 
 ```bash
 terraform init \
-  -backend-config="bucket=gamania-sre-tfstate-694322569347" \
+  -backend-config="bucket=sre-demo-sre-tfstate-<YOUR_AWS_ACCOUNT_ID>" \
   -backend-config="key=sre-pretest/terraform.tfstate" \
   -backend-config="region=ap-northeast-1"
 ```
@@ -72,7 +72,7 @@ This pattern allows the same Terraform code to be reused across multiple environ
 
 ```bash
 terraform init \
-  -backend-config="bucket=gamania-sre-tfstate-694322569347" \
+  -backend-config="bucket=sre-demo-sre-tfstate-<YOUR_AWS_ACCOUNT_ID>" \
   -backend-config="key=sre-pretest/terraform.tfstate" \
   -backend-config="region=ap-northeast-1"
 ```
@@ -106,14 +106,14 @@ aws eks update-kubeconfig \
 | Variable | Description | Example |
 |---|---|---|
 | `aws_region` | AWS region to deploy into | `ap-northeast-1` |
-| `cluster_name` | EKS cluster name | `gamania-sre-cluster` |
+| `cluster_name` | EKS cluster name | `sre-demo-cluster` |
 | `vpc_cidr` | CIDR block for the VPC | `10.0.0.0/16` |
 
 Define these in a `terraform.tfvars` file (not committed to version control):
 
 ```hcl
 aws_region   = "ap-northeast-1"
-cluster_name = "gamania-sre-cluster"
+cluster_name = "sre-demo-cluster"
 vpc_cidr     = "10.0.0.0/16"
 ```
 
@@ -165,7 +165,7 @@ Remote state is stored in S3 with versioning enabled. If the state becomes corru
 ```bash
 # List available state versions
 aws s3api list-object-versions \
-  --bucket gamania-sre-tfstate-694322569347 \
+  --bucket sre-demo-sre-tfstate-<YOUR_AWS_ACCOUNT_ID> \
   --prefix sre-pretest/terraform.tfstate
 ```
 
