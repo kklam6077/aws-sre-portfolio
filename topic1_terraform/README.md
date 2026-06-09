@@ -1,4 +1,3 @@
-# SRE-DEMO-SRE-Pretest
 # SRE-Pretest, candidate Lam Kin Kwan
 
 # SRE Pretest — AWS Infrastructure (Terraform)
