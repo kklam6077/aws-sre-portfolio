@@ -23,7 +23,7 @@ sre-pretest/
 ## Where to Start
 
 | Order | Folder | Read First g
-g---|---|---|
+|---|---|---|
 | 1 | `topic1_terraform/` | `README.md` |
 | 2 | `topic2_docker/` | `Instruction.md` |
 | 3 | `topic3_helm_kubernetes/sre-demo-app/` | `INSTRUCTIONS.md` |
