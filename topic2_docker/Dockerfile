@@ -1,7 +1,6 @@
 # 使用官方 nginx alpine 版本作為 base image
 FROM nginx:alpine
 
-# 建立題目要求的檔案，直接寫入 nginx 預設位置
 RUN echo "Hello SRE!" > /usr/share/nginx/html/sre.txt
 
 # Unroot 操作, 把User 改給Nginx User
